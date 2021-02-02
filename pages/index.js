@@ -1,7 +1,7 @@
 import Head from "next/head";
 import styles from "./css/styles.module.css";
 import React, { useEffect } from "react";
-import { initSpeechRecognition } from "./utils";
+import { initSpeechRecognition } from "../utils/utils";
 
 export default function IndexPage() {
   let recognition;
