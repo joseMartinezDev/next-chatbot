@@ -2,6 +2,23 @@ import Head from "next/head";
 import styles from "./css/styles.module.css";
 import React, { useEffect } from "react";
 import { initSpeechRecognition } from "../utils/utils";
+import Pusher from "pusher-js";
+
+let pusher;
+let channel;
+
+async function pushData(data) {
+  const res = await fetch("/api/server", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    console.error("failed to push data");
+  }
+}
 
 export default function IndexPage() {
   let recognition;
@@ -10,12 +27,23 @@ export default function IndexPage() {
     recognition = initSpeechRecognition();
 
     recognition.addEventListener("result", recognitionResultHandler);
+
+    Pusher.logToConsole = true;
+    pusher = new Pusher(process.env.NEXT_PUBLIC_KEY, {
+      cluster: process.env.NEXT_PUBLIC_CLUSTER,
+    });
+
+    channel = pusher.subscribe("my-channel");
+    channel.bind("my-event", function (data) {
+      alert(JSON.stringify(data));
+    });
   }, []);
 
   const recognitionResultHandler = (e) => {
     let last = e.results.length - 1;
     let text = e.results[last][0].transcript;
-    console.log("recog", text);
+
+    pushData(text);
   };
 
   return (
