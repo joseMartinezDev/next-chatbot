@@ -1,0 +1,18 @@
+.talkButton {
+  display: block;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 200px;
+  height: 200px;
+  border: 0;
+  border-radius: 50%;
+  padding: 0.7em 1em;
+  margin: 4em auto 3em;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(180deg, #39c2c9 0%, #3fc8c9 80%, #3fc8c9 100%);
+  box-shadow: 2px 5px 30px rgba(63, 200, 201, 0.4);
+
+  will-change: transform, filter;
+  transition: all 0.3s ease-out;
+}
