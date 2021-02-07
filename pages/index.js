@@ -7,17 +7,18 @@ import Pusher from "pusher-js";
 let pusher;
 let channel;
 
-async function pushData(data) {
-  const res = await fetch("/api/server", {
+function pushData(data) {
+  fetch("/api/server", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
+  }).then((res) => {
+    if (!res.ok) {
+      console.error("failed to push data");
+    }
   });
-  if (!res.ok) {
-    console.error("failed to push data");
-  }
 }
 
 export default function IndexPage() {
@@ -35,7 +36,7 @@ export default function IndexPage() {
 
     channel = pusher.subscribe("my-channel");
     channel.bind("my-event", function (data) {
-      console.log(JSON.stringify(data));
+      alert(JSON.stringify(data));
     });
   }, []);
 
