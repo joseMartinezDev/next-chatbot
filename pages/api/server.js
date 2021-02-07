@@ -18,10 +18,8 @@ module.exports = (req, res) => {
         message: data,
       })
       .then(() => {
-        return;
+        return res.status(200).end("sent event successfully");
       });
-
-    res.status(200).end("sent event successfully");
   });
 
   // res.status(500).end("there was an error");
