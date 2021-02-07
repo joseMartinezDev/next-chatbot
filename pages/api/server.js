@@ -8,18 +8,20 @@ const pusher = new Pusher({
   useTLS: true,
 });
 
-module.exports = async (req, res) => {
+module.exports = (req, res) => {
   const data = req.body;
-  try {
-    await pusher.trigger("my-channel", "my-event", {
-      message: data,
-    });
+  console.log(data);
 
-    console.log(data);
-
-    res.status(200).end("sent event successfully");
-  } catch (e) {
-    res.status(500).end("there was an error");
-    console.error("Error sending message", e.message);
-  }
+  return new Promise(() => {
+    pusher
+      .trigger("my-channel", "my-event", {
+        message: data,
+      })
+      .then(() => {
+        return res.status(200).end("sent event successfully");
+      });
+  }).catch((e) => {
+    res.status(500).end("There was an error");
+    console.log("Error sending message", e.message);
+  });
 };
