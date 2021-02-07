@@ -8,10 +8,10 @@ const pusher = new Pusher({
   useTLS: true,
 });
 
-module.exports = (req, res) => {
+module.exports = async (req, res) => {
   const data = req.body;
   try {
-    pusher.trigger("my-channel", "my-event", {
+    await pusher.trigger("my-channel", "my-event", {
       message: data,
     });
 

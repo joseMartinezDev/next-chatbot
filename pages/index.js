@@ -35,7 +35,7 @@ export default function IndexPage() {
 
     channel = pusher.subscribe("my-channel");
     channel.bind("my-event", function (data) {
-      alert(JSON.stringify(data));
+      console.log(JSON.stringify(data));
     });
   }, []);
 
