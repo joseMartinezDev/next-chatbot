@@ -20,8 +20,8 @@ module.exports = (req, res) => {
       .then(() => {
         return res.status(200).end("sent event successfully");
       });
+  }).catch((e) => {
+    res.status(500).end("There was an error");
+    console.log("Error sending message", e.message);
   });
-
-  // res.status(500).end("there was an error");
-  // console.error("Error sending message", e.message);
 };

@@ -16,7 +16,7 @@ function pushData(data) {
     body: JSON.stringify(data),
   }).then((res) => {
     if (!res.ok) {
-      console.error("failed to push data");
+      console.error("failed to push data", res);
     }
   });
 }
