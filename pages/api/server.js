@@ -8,21 +8,28 @@ const pusher = new Pusher({
   useTLS: true,
 });
 
+const projectId = process.env.PROJECT_ID;
+
+const credentials = {
+  client_email: process.env.CLIENT_EMAIL,
+  private_key: process.env.PRIVATE_KEY.replace(/\\n/g, "\n"),
+};
+
 const dialogflow = require("@google-cloud/dialogflow");
 const uuid = require("uuid");
+
+const sessionId = uuid.v4();
+
+// Create a new session
+const sessionClient = new dialogflow.SessionsClient({
+  projectId,
+  credentials,
+});
+const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionId);
 
 module.exports = async (req, res) => {
   const data = req.body;
   console.log("data", data);
-
-  const sessionId = uuid.v4();
-
-  // Create a new session
-  const sessionClient = new dialogflow.SessionsClient();
-  const sessionPath = sessionClient.projectAgentSessionPath(
-    "newagent-siox",
-    sessionId
-  );
 
   // The text query request.
   const request = {
