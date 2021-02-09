@@ -1,7 +1,7 @@
 import Head from "next/head";
 import styles from "./css/styles.module.css";
 import React, { useEffect } from "react";
-import { initSpeechRecognition } from "../utils/utils";
+import { initSpeechRecognition, synthVoice } from "../utils/utils";
 import Pusher from "pusher-js";
 
 let pusher;
@@ -36,7 +36,8 @@ export default function IndexPage() {
 
     channel = pusher.subscribe("my-channel");
     channel.bind("my-event", function (data) {
-      alert(JSON.stringify(data));
+      // alert(data.message);
+      synthVoice(data.message);
     });
   }, []);
 
