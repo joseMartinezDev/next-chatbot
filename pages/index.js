@@ -1,35 +1,36 @@
 import Head from "next/head";
 import styles from "./css/styles.module.css";
 import React, { useEffect, useState } from "react";
-import { initSpeechRecognition, synthVoice } from "../utils/utils";
+import { initSpeechRecognition, synthVoice, changeVoice } from "../utils/utils";
 import Pusher from "pusher-js";
 
 let pusher;
 let channel;
 let recognition;
-let utterance;
 
 export default function IndexPage() {
   const [buttonText, setButtonText] = useState("PRESS TO TALK!");
   const [speaking, setSpeaking] = useState(false);
 
   useEffect(() => {
-    recognition = initSpeechRecognition();
-    recognition.addEventListener("result", recognitionResultHandler);
-    recognition.addEventListener("speechend", recognitionEndHandler);
+    changeVoice().then((utterance) => {
+      recognition = initSpeechRecognition();
+      recognition.addEventListener("result", recognitionResultHandler);
+      recognition.addEventListener("speechend", recognitionEndHandler);
 
-    // Pusher.logToConsole = true;
-    pusher = new Pusher(process.env.NEXT_PUBLIC_KEY, {
-      cluster: process.env.NEXT_PUBLIC_CLUSTER,
-    });
+      // Pusher.logToConsole = true;
+      pusher = new Pusher(process.env.NEXT_PUBLIC_KEY, {
+        cluster: process.env.NEXT_PUBLIC_CLUSTER,
+      });
 
-    channel = pusher.subscribe("my-channel");
-    channel.bind("my-event", function (data) {
-      utterance = synthVoice(data.message);
-      utterance.addEventListener("start", () => setButtonText("SPEAKING!"));
-      utterance.addEventListener("end", () => {
-        setSpeaking(false);
-        setButtonText("PRESS TO TALK!");
+      channel = pusher.subscribe("my-channel");
+      channel.bind("my-event", function (data) {
+        synthVoice(utterance, data.message);
+        utterance.addEventListener("start", () => setButtonText("SPEAKING!"));
+        utterance.addEventListener("end", () => {
+          setSpeaking(false);
+          setButtonText("PRESS TO TALK!");
+        });
       });
     });
   }, []);
