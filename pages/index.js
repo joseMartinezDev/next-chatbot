@@ -71,7 +71,7 @@ export default function IndexPage() {
   return (
     <main>
       <Head>
-        <title>Next.js Chatbot by Jose Msrtinez</title>
+        <title>Next.js Chatbot by Jose Martinez</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href="favicon.ico" />
       </Head>
@@ -83,6 +83,9 @@ export default function IndexPage() {
         >
           {buttonText}
         </button>
+        <p>
+          <small>Only available for Chrome on Desktop</small>
+        </p>
       </div>
     </main>
   );
