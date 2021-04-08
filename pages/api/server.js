@@ -29,7 +29,6 @@ const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionId);
 
 module.exports = async (req, res) => {
   const data = req.body;
-  console.log("data", data);
 
   // The text query request.
   const request = {
@@ -46,17 +45,9 @@ module.exports = async (req, res) => {
 
   // Send request and log result
   const responses = await sessionClient.detectIntent(request);
-  console.log("Detected intent");
-  const result = responses[0].queryResult;
-  console.log(`  Query: ${result.queryText}`);
-  console.log(`  Response: ${result.fulfillmentText}`);
-  if (result.intent) {
-    console.log(`  Intent: ${result.intent.displayName}`);
-  } else {
-    console.log(`  No intent matched.`);
-  }
 
-  console.log("end");
+  const result = responses[0].queryResult;
+
   return new Promise(() => {
     pusher
       .trigger("my-channel", "my-event", {
